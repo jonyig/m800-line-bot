@@ -1,19 +1,11 @@
+/*
+Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+
+*/
 package main
 
-import (
-	"github.com/gin-gonic/gin"
-	"log"
-	"m800-line-bot/routes"
-)
+import "m800-line-bot/cmd"
 
 func main() {
-	r := gin.Default()
-
-	routes.Routes(r)
-
-	err := r.Run(":8000")
-	if err != nil {
-		return
-	}
-	log.Print(123)
+	cmd.Execute()
 }
