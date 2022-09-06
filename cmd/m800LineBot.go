@@ -1,8 +1,11 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/spf13/cobra"
+	configFolder "m800-line-bot/config"
 	"m800-line-bot/routes"
 )
 
@@ -11,15 +14,18 @@ var m800LineBotCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		err := InitialViper()
-		if err != nil {
-			return
+		if configFolder.IsNotEnv() {
+			err := InitialViper()
+			if err != nil {
+				return
+			}
 		}
 
+		config := configFolder.NewConfig()
 		r := gin.Default()
 
 		routes.Routes(r)
-		err = r.Run(":8000")
+		err := r.Run(fmt.Sprintf(":%s", config.GetPort()))
 		if err != nil {
 			return
 		}
