@@ -11,11 +11,15 @@ var m800LineBotCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
+		err := InitialViper()
+		if err != nil {
+			return
+		}
+
 		r := gin.Default()
 
 		routes.Routes(r)
-
-		err := r.Run(":8000")
+		err = r.Run(":8000")
 		if err != nil {
 			return
 		}
