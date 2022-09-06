@@ -5,8 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/spf13/cobra"
-	configFolder "m800-line-bot/config"
+	"m800-line-bot/config"
 	"m800-line-bot/routes"
+	"m800-line-bot/storage"
 )
 
 var m800LineBotCmd = &cobra.Command{
@@ -14,18 +15,21 @@ var m800LineBotCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if configFolder.IsNotEnv() {
+		if config.IsNotEnv() {
 			err := InitialViper()
 			if err != nil {
+				fmt.Printf("viper.ReadInConfig() failed,err:%v\n", err)
 				return
 			}
 		}
 
-		config := configFolder.NewConfig()
+		storage.SetCrop()
+
+		configuration := config.NewConfig()
 		r := gin.Default()
 
 		routes.Routes(r)
-		err := r.Run(fmt.Sprintf(":%s", config.GetPort()))
+		err := r.Run(fmt.Sprintf(":%s", configuration.GetPort()))
 		if err != nil {
 			return
 		}

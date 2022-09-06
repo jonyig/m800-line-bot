@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	"os"
 
@@ -50,10 +49,5 @@ func InitialViper() (err error) {
 	viper.SetConfigFile(cfgFile)
 
 	err = viper.ReadInConfig()
-	if err != nil {
-		fmt.Printf("viper.ReadInConfig() failed,err:%v\n", err)
-		return
-	}
-
 	return
 }
