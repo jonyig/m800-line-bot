@@ -7,6 +7,8 @@ import (
 
 type Config interface {
 	GetPort() string
+	GetMongoDBUsername() string
+	GetMongoDBPassword() string
 }
 
 var (

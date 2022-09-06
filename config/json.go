@@ -12,3 +12,9 @@ func NewJsonConfig() Config {
 func (c JsonConfig) GetPort() string {
 	return viper.GetString("port")
 }
+func (c JsonConfig) GetMongoDBUsername() string {
+	return viper.GetString("mongo.username")
+}
+func (c JsonConfig) GetMongoDBPassword() string {
+	return viper.GetString("mongo.password")
+}
