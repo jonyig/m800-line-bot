@@ -16,7 +16,7 @@ services:
 
   mongo:
     image: library/mongo:4.4
-    container_name: mongo-44
+    container_name: ${MONGO_SERVICE_NAME}
     ports:
       - "27017:27017"
     volumes:
