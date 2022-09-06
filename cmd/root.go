@@ -47,10 +47,6 @@ func init() {
 }
 
 func InitialViper() (err error) {
-	if cfgFile == "" {
-		return
-	}
-
 	viper.SetConfigFile(cfgFile)
 
 	err = viper.ReadInConfig()
