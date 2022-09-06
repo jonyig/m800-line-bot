@@ -1,0 +1,28 @@
+version: "3"
+
+networks:
+  backend:
+    driver: bridge
+
+
+services:
+  bot-golang-180:
+    image: golang:1.18-alpine
+    container_name: bot-golang-180
+    networks:
+      - backend
+    command: tail -f /dev/null
+
+
+  mongo:
+    image: library/mongo:4.4
+    container_name: mongo-44
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongo-50:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    networks:
+      - backend
