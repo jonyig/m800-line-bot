@@ -3,14 +3,14 @@ package service
 import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
-	"m800-line-bot/repository"
+	repository "m800-line-bot/repository/linebot"
 )
 
 type LineBotService struct {
-	LineAPI *repository.LineApiRepository
+	LineAPI *repository.LineBotApiRepository
 }
 
-func NewLineBotService(lineApi *repository.LineApiRepository) *LineBotService {
+func NewLineBotService(lineApi *repository.LineBotApiRepository) *LineBotService {
 	return &LineBotService{
 		LineAPI: lineApi,
 	}

@@ -6,20 +6,20 @@ import (
 )
 
 var (
-	LineUserInfoAPI = "https://api.line.me/v2/bot/profile/%s"
+	LineBotUserInfoAPI = "https://api.line.me/v2/bot/profile/%s"
 )
 
-type LineApiRepository struct {
+type LineBotApiRepository struct {
 	httpClient *library.Client
 }
 
-func NewLineApiRepository(client *library.Client) *LineApiRepository {
-	return &LineApiRepository{
+func NewLineBotApiRepository(client *library.Client) *LineBotApiRepository {
+	return &LineBotApiRepository{
 		httpClient: client,
 	}
 }
 
-func (r *LineApiRepository) GetUserInfo(userId string) (username string, err error) {
+func (r *LineBotApiRepository) GetUserInfo(userId string) (username string, err error) {
 	type UserInfo struct {
 		UserId      string `json:"userId"`
 		DisplayName string `json:"displayName"`
@@ -29,7 +29,7 @@ func (r *LineApiRepository) GetUserInfo(userId string) (username string, err err
 
 	err = r.httpClient.
 		SetGetRequest(
-			fmt.Sprintf(LineUserInfoAPI, userId),
+			fmt.Sprintf(LineBotUserInfoAPI, userId),
 		).
 		SetAuthorization().
 		Send(userInfo)

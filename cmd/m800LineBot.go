@@ -8,7 +8,7 @@ import (
 	"m800-line-bot/config"
 	"m800-line-bot/handler"
 	"m800-line-bot/library"
-	"m800-line-bot/repository"
+	"m800-line-bot/repository/linebot"
 	"m800-line-bot/routes"
 	"m800-line-bot/service"
 	"m800-line-bot/storage"
@@ -31,7 +31,7 @@ var m800LineBotCmd = &cobra.Command{
 
 		configuration := config.NewConfig()
 		client := library.NewClient(configuration.GetLineChannelToken())
-		lineApi := repository.NewLineApiRepository(client)
+		lineApi := repository.NewLineBotApiRepository(client)
 		service := service.NewLineBotService(lineApi)
 		h := handler.NewLineBotHandler(
 			configuration,
