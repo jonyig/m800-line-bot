@@ -23,7 +23,7 @@ var m800LineBotCmd = &cobra.Command{
 			}
 		}
 
-		storage.SetCrop()
+		storage.SetMessage()
 
 		configuration := config.NewConfig()
 		r := gin.Default()

@@ -15,7 +15,7 @@ const (
 	MongoDBUniqueCode = "user"
 )
 
-func SetCrop() {
+func SetMessage() {
 	mongoClient := library.GetMongoDBInstance()
 	collection := mongoClient.Database(MongoDBDatabase).Collection(MongoDBCollection)
 	setUniqueIndex := mongo.IndexModel{
