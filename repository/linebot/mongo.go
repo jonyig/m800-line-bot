@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
+	"m800-line-bot/models"
 	"m800-line-bot/storage"
 )
 
@@ -18,15 +20,27 @@ func NewLineBotMongoRepository(client *mongo.Client) *LineBotMongoRepository {
 }
 
 func (r *LineBotMongoRepository) SaveMessage(userId string, message string) {
-	type MessageInfo struct {
-		UserId  string `json:"user_id" bson:"user_id"`
-		Message string `json:"message" bson:"message"`
-	}
 
-	coll := r.Client.Database(storage.MongoDBDatabase).Collection(storage.MongoDBCollection)
+	coll := r.GetMessageCollection()
 
-	_, err := coll.InsertOne(context.Background(), MessageInfo{UserId: userId, Message: message})
+	_, err := coll.InsertOne(context.Background(), models.MessageInfo{UserId: userId, Message: message})
 	if err != nil {
 		log.Print(err)
 	}
+}
+func (r *LineBotMongoRepository) GetMessages() (results []models.MessageInfo, err error) {
+	coll := r.GetMessageCollection()
+	cursor, err := coll.Find(context.TODO(), bson.D{})
+	if err != nil {
+		return
+	}
+	if err = cursor.All(context.Background(), &results); err != nil {
+		return
+	}
+
+	return
+}
+
+func (r *LineBotMongoRepository) GetMessageCollection() *mongo.Collection {
+	return r.Client.Database(storage.MongoDBDatabase).Collection(storage.MongoDBCollection)
 }

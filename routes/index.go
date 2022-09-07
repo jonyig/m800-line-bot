@@ -13,4 +13,5 @@ func Routes(route *gin.Engine, h *handler.LineBotHandler) {
 		})
 	})
 	route.POST("/webhook", h.Webhook)
+	route.GET("/message", h.GetMessage)
 }

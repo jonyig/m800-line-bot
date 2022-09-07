@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
+	"m800-line-bot/models"
 	repository "m800-line-bot/repository/linebot"
 )
 
@@ -29,4 +30,8 @@ func (s *LineBotService) SaveMessage(userId string, message string) *linebot.Tex
 	return linebot.NewTextMessage(
 		message,
 	)
+}
+
+func (s *LineBotService) GetMessages() (list []models.MessageInfo, err error) {
+	return s.LineMongo.GetMessages()
 }

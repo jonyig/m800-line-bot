@@ -5,6 +5,7 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"m800-line-bot/config"
+	"m800-line-bot/models"
 	"m800-line-bot/service"
 	"net/http"
 )
@@ -62,4 +63,21 @@ func (h *LineBotHandler) TextHandler(bot *linebot.Client, replyToken string, use
 	).Do(); err != nil {
 		log.Print(err)
 	}
+}
+
+func (h *LineBotHandler) GetMessage(c *gin.Context) {
+	var response models.Response
+	code := http.StatusOK
+
+	list, err := h.service.GetMessages()
+	if err != nil {
+		code = http.StatusInternalServerError
+	}
+
+	response.SetData(list).SetErr(err)
+
+	c.JSON(
+		code,
+		response,
+	)
 }
