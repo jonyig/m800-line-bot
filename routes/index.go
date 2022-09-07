@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func Routes(route *gin.Engine, h *handler.Handler) {
+func Routes(route *gin.Engine, h *handler.LineBotHandler) {
 	route.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "health",

@@ -8,6 +8,7 @@ import (
 	"m800-line-bot/config"
 	"m800-line-bot/handler"
 	"m800-line-bot/routes"
+	"m800-line-bot/service"
 	"m800-line-bot/storage"
 )
 
@@ -27,8 +28,11 @@ var m800LineBotCmd = &cobra.Command{
 		storage.SetMessage()
 
 		configuration := config.NewConfig()
-
-		h := handler.NewHandler(configuration)
+		service := service.NewLineBotService()
+		h := handler.NewLineBotHandler(
+			configuration,
+			service,
+		)
 
 		r := gin.Default()
 
