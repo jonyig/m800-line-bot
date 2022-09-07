@@ -6,14 +6,6 @@ networks:
 
 
 services:
-  bot-golang-180:
-    image: golang:1.18-alpine
-    container_name: bot-golang-180
-    networks:
-      - backend
-    command: tail -f /dev/null
-
-
   mongo:
     image: library/mongo:4.4
     container_name: ${MONGO_SERVICE_NAME}
