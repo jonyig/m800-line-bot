@@ -6,6 +6,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/spf13/cobra"
 	"m800-line-bot/config"
+	"m800-line-bot/handler"
 	"m800-line-bot/routes"
 	"m800-line-bot/storage"
 )
@@ -26,9 +27,12 @@ var m800LineBotCmd = &cobra.Command{
 		storage.SetMessage()
 
 		configuration := config.NewConfig()
+
+		h := handler.NewHandler(configuration)
+
 		r := gin.Default()
 
-		routes.Routes(r)
+		routes.Routes(r, h)
 		err := r.Run(fmt.Sprintf(":%s", configuration.GetPort()))
 		if err != nil {
 			return

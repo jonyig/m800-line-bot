@@ -6,11 +6,11 @@ import (
 	"net/http"
 )
 
-func Routes(route *gin.Engine) {
+func Routes(route *gin.Engine, h *handler.Handler) {
 	route.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "health",
 		})
 	})
-	route.POST("/webhook", handler.Webhook)
+	route.POST("/webhook", h.Webhook)
 }

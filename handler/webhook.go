@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
-	"m800-line-bot/config"
 	"net/http"
 )
 
@@ -16,12 +15,10 @@ var (
 	}
 )
 
-func Webhook(context *gin.Context) {
-	configuration := config.NewConfig()
-
+func (h *Handler) Webhook(context *gin.Context) {
 	bot, err := linebot.New(
-		configuration.GetLineChannelSecret(),
-		configuration.GetLineChannelToken(),
+		h.config.GetLineChannelSecret(),
+		h.config.GetLineChannelToken(),
 	)
 	if err != nil {
 		log.Print(err)
