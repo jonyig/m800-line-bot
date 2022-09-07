@@ -2,7 +2,6 @@ package config
 
 import (
 	"os"
-	"sync"
 )
 
 type Config interface {
@@ -13,22 +12,12 @@ type Config interface {
 	GetLineChannelToken() string
 }
 
-var (
-	Instance Config
-	once     sync.Once
-)
-
 func NewConfig() Config {
-	var c Config
-
 	if IsNotEnv() {
-		c = NewJsonConfig()
+		return NewJsonConfig()
 	}
 
-	once.Do(func() {
-		Instance = c
-	})
-	return Instance
+	return NewEnvConfig()
 }
 
 func IsNotEnv() bool {
