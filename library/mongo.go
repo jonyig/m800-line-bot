@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	devUri = "mongodb://%s:%s@localhost:27017/"
+	prodUri = "mongodb+srv://%s:%s@cluster0.qlumwac.mongodb.net/?retryWrites=true&w=majority"
+	devUri  = "mongodb://%s:%s@localhost:27017/"
 )
 
 var (
@@ -48,9 +49,13 @@ func connectToMongo() *mongo.Client {
 
 func getUrl() string {
 	configuration := config.NewConfig()
+	uri := prodUri
+	if config.IsNotEnv() {
+		uri = devUri
+	}
 
 	url := fmt.Sprintf(
-		devUri,
+		uri,
 		configuration.GetMongoDBUsername(),
 		configuration.GetMongoDBPassword(),
 	)
