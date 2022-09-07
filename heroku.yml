@@ -2,4 +2,4 @@ build:
   languages:
     - go
 run :
-  web : m800-line-bot
+  web : m800-line-bot m800LineBot
