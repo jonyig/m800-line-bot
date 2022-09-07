@@ -35,3 +35,7 @@ func (s *LineBotService) SaveMessage(userId string, message string) *linebot.Tex
 func (s *LineBotService) GetMessages() (list []models.MessageInfo, err error) {
 	return s.LineMongo.GetMessages()
 }
+
+func (s *LineBotService) Broadcast(text string) error {
+	return s.LineAPI.Broadcast(text)
+}

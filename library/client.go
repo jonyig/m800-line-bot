@@ -1,6 +1,7 @@
 package library
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -26,6 +27,14 @@ func (c *Client) SetGetRequest(url string) *Client {
 	)
 	return c
 }
+func (c *Client) SetPostRequest(url string, body []byte) *Client {
+	c.request, _ = http.NewRequest(
+		"POST",
+		url,
+		bytes.NewReader(body),
+	)
+	return c
+}
 
 func (c *Client) SetAuthorization() *Client {
 	token := fmt.Sprintf("Bearer %s", c.channelAccessToken)
@@ -33,7 +42,12 @@ func (c *Client) SetAuthorization() *Client {
 	return c
 }
 
-func (c *Client) Send(r interface{}) error {
+func (c *Client) SetContentTypeJson() *Client {
+	c.request.Header.Set("Content-Type", "application/json")
+	return c
+}
+
+func (c *Client) Send(r any) error {
 	client := &http.Client{}
 	response, err := client.Do(c.request)
 	if err != nil {

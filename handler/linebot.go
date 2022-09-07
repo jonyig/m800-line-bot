@@ -81,3 +81,25 @@ func (h *LineBotHandler) GetMessage(c *gin.Context) {
 		response,
 	)
 }
+func (h *LineBotHandler) Broadcast(c *gin.Context) {
+	type Request struct {
+		Text string `json:"text" binding:"required"`
+	}
+
+	var req Request
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "text must be pass"})
+		return
+	}
+
+	code := http.StatusOK
+
+	err := h.service.Broadcast(req.Text)
+	if err != nil {
+		code = http.StatusInternalServerError
+	}
+	c.JSON(
+		code,
+		nil,
+	)
+}

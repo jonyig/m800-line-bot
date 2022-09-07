@@ -3,10 +3,12 @@ package repository
 import (
 	"fmt"
 	"m800-line-bot/library"
+	"m800-line-bot/models"
 )
 
 var (
-	LineBotUserInfoAPI = "https://api.line.me/v2/bot/profile/%s"
+	LineBotUserInfoAPI  = "https://api.line.me/v2/bot/profile/%s"
+	LineBotBroadcastAPI = "https://api.line.me/v2/bot/message/broadcast"
 )
 
 type LineBotApiRepository struct {
@@ -39,5 +41,17 @@ func (r *LineBotApiRepository) GetUserInfo(userId string) (username string, err 
 	}
 
 	username = userInfo.DisplayName
+	return
+}
+func (r *LineBotApiRepository) Broadcast(text string) (err error) {
+	message := models.NewBroadcastMessage(text).ToJson()
+	err = r.httpClient.
+		SetPostRequest(
+			LineBotBroadcastAPI,
+			message,
+		).
+		SetAuthorization().
+		SetContentTypeJson().
+		Send(nil)
 	return
 }
