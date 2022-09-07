@@ -44,16 +44,21 @@ func (h *LineBotHandler) Webhook(context *gin.Context) {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
-				h.TextHandler(bot, event.ReplyToken, message)
+				h.TextHandler(
+					bot,
+					event.ReplyToken,
+					event.Source.UserID,
+					message.Text,
+				)
 			}
 		}
 	}
 }
 
-func (h *LineBotHandler) TextHandler(bot *linebot.Client, replyToken string, message *linebot.TextMessage) {
+func (h *LineBotHandler) TextHandler(bot *linebot.Client, replyToken string, userID string, message string) {
 	if _, err := bot.ReplyMessage(
 		replyToken,
-		h.service.SaveMessage(message.ID, message.Text),
+		h.service.SaveMessage(userID, message),
 	).Do(); err != nil {
 		log.Print(err)
 	}
