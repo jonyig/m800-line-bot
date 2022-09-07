@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"m800-line-bot/handler"
 	"net/http"
 )
 
@@ -11,4 +12,5 @@ func Routes(route *gin.Engine) {
 			"message": "health",
 		})
 	})
+	route.POST("/webhook", handler.Webhook)
 }
