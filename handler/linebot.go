@@ -11,8 +11,9 @@ import (
 )
 
 type LineBotHandler struct {
-	config  config.Config
-	service *service.LineBotService
+	config      config.Config
+	service     *service.LineBotService
+	textMapFunc map[string]func() linebot.SendingMessage
 }
 
 func NewLineBotHandler(configuration config.Config, service *service.LineBotService) *LineBotHandler {
@@ -23,6 +24,7 @@ func NewLineBotHandler(configuration config.Config, service *service.LineBotServ
 }
 
 func (h *LineBotHandler) Webhook(context *gin.Context) {
+	h.setTextMap()
 	bot, err := linebot.New(
 		h.config.GetLineChannelSecret(),
 		h.config.GetLineChannelToken(),
@@ -30,7 +32,6 @@ func (h *LineBotHandler) Webhook(context *gin.Context) {
 	if err != nil {
 		log.Print(err)
 	}
-
 	events, err := bot.ParseRequest(context.Request)
 
 	if err != nil {
@@ -57,11 +58,24 @@ func (h *LineBotHandler) Webhook(context *gin.Context) {
 }
 
 func (h *LineBotHandler) TextHandler(bot *linebot.Client, replyToken string, userID string, message string) {
+	var result linebot.SendingMessage
+	if closure, ok := h.textMapFunc[message]; ok {
+		result = closure()
+	} else {
+		result = h.service.SaveMessage(userID, message)
+	}
 	if _, err := bot.ReplyMessage(
 		replyToken,
-		h.service.SaveMessage(userID, message),
+		result,
 	).Do(); err != nil {
 		log.Print(err)
+	}
+}
+
+func (h *LineBotHandler) setTextMap() {
+	h.textMapFunc = map[string]func() linebot.SendingMessage{
+		"列出所有訊息": h.service.GetMessagesToBot,
+		"廣播訊息":   h.service.BroadcastToBot,
 	}
 }
 

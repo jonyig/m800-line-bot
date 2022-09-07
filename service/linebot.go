@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/json"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"log"
 	"m800-line-bot/models"
@@ -32,8 +33,25 @@ func (s *LineBotService) SaveMessage(userId string, message string) *linebot.Tex
 	)
 }
 
+func (s *LineBotService) GetMessagesToBot() linebot.SendingMessage {
+	list, err := s.LineMongo.GetMessages()
+	if err != nil {
+		return linebot.NewTextMessage("service fail")
+	}
+	jsonString, _ := json.Marshal(list)
+	return linebot.NewTextMessage(string(jsonString))
+}
+
 func (s *LineBotService) GetMessages() (list []models.MessageInfo, err error) {
 	return s.LineMongo.GetMessages()
+}
+
+func (s *LineBotService) BroadcastToBot() linebot.SendingMessage {
+	err := s.LineAPI.Broadcast("Hello everyone")
+	if err != nil {
+		return linebot.NewTextMessage("service fail")
+	}
+	return linebot.NewTextMessage("")
 }
 
 func (s *LineBotService) Broadcast(text string) error {
