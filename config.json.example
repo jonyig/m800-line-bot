@@ -3,5 +3,9 @@
   "mongo": {
     "username": "root",
     "password": "root"
+  },
+  "line-bot": {
+    "channel_secret": "",
+    "channel_token": ""
   }
 }

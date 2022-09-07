@@ -9,6 +9,8 @@ type Config interface {
 	GetPort() string
 	GetMongoDBUsername() string
 	GetMongoDBPassword() string
+	GetLineChannelSecret() string
+	GetLineChannelToken() string
 }
 
 var (

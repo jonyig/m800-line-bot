@@ -18,3 +18,11 @@ func (c JsonConfig) GetMongoDBUsername() string {
 func (c JsonConfig) GetMongoDBPassword() string {
 	return viper.GetString("mongo.password")
 }
+
+func (c JsonConfig) GetLineChannelSecret() string {
+	return viper.GetString("line-bot.channel_secret")
+}
+
+func (c JsonConfig) GetLineChannelToken() string {
+	return viper.GetString("line-bot.channel_token")
+}
