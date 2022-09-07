@@ -7,12 +7,14 @@ import (
 )
 
 type LineBotService struct {
-	LineAPI *repository.LineBotApiRepository
+	LineAPI   *repository.LineBotApiRepository
+	LineMongo *repository.LineBotMongoRepository
 }
 
-func NewLineBotService(lineApi *repository.LineBotApiRepository) *LineBotService {
+func NewLineBotService(lineApi *repository.LineBotApiRepository, lineMongo *repository.LineBotMongoRepository) *LineBotService {
 	return &LineBotService{
-		LineAPI: lineApi,
+		LineAPI:   lineApi,
+		LineMongo: lineMongo,
 	}
 }
 

@@ -6,7 +6,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
-	"m800-line-bot/library"
 )
 
 const (
@@ -15,9 +14,8 @@ const (
 	MongoDBUniqueCode = "user"
 )
 
-func SetMessage() {
-	mongoClient := library.GetMongoDBInstance()
-	collection := mongoClient.Database(MongoDBDatabase).Collection(MongoDBCollection)
+func SetMessage(client *mongo.Client) {
+	collection := client.Database(MongoDBDatabase).Collection(MongoDBCollection)
 	setUniqueIndex := mongo.IndexModel{
 		Keys:    bson.D{{MongoDBUniqueCode, 1}},
 		Options: options.Index().SetUnique(false),

@@ -27,12 +27,17 @@ var m800LineBotCmd = &cobra.Command{
 			}
 		}
 
-		storage.SetMessage()
+		mongoClient := library.GetMongoDBInstance()
+		storage.SetMessage(mongoClient)
 
 		configuration := config.NewConfig()
 		client := library.NewClient(configuration.GetLineChannelToken())
 		lineApi := repository.NewLineBotApiRepository(client)
-		service := service.NewLineBotService(lineApi)
+		lineMongo := repository.NewLineBotMongoRepository(mongoClient)
+		service := service.NewLineBotService(
+			lineApi,
+			lineMongo,
+		)
 		h := handler.NewLineBotHandler(
 			configuration,
 			service,
