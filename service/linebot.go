@@ -23,8 +23,8 @@ func (s *LineBotService) SaveMessage(userId string, message string) *linebot.Tex
 	if err != nil {
 		log.Print(err)
 	}
-	log.Print(username)
-	log.Print(message)
+
+	s.LineMongo.SaveMessage(username, message)
 
 	return linebot.NewTextMessage(
 		message,
